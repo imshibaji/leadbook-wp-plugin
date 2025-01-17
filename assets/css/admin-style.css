@@ -1,0 +1,4 @@
+.wp-core-ui select{
+    max-width: 100% !important;
+    padding: 0 8px !important;
+}
