@@ -1,11 +1,22 @@
 <?php
+$actions = [
+    ['link' => 'admin.php?page=leadbook-leads', 'title' => 'Back To Leads Section'],
+];
+get_leadbook_header('Edit Lead', $actions);
+
+// Get Lead Data by ID
 $lead = get_lead(get_current_id());
+
+// Update Lead
 update_lead($_POST);
 ?>
-<h1>Edit Lead</h1>
 <form class="row pe-3" action="<?php echo esc_html(post_url()); ?>" method="post">
     <input type="hidden" name="action" value="edit">
-    <input type="hidden" name="id" value="<?php echo esc_html($lead->id); ?>">
+    <input type="hidden" name="id" value="<?php echo esc_html($lead->ID); ?>">
+    <div class="col-md-12">
+        <label for="Purpose">Purpose*</label>
+        <input type="text" name="purpose" id="Purpose" class="form-control" value="<?php echo esc_html($lead->purpose); ?>" required>
+    </div>
     <div class="col-md-6">
         <label for="name">Name*</label>
         <input type="text" name="name" id="name" class="form-control" value="<?php echo esc_html($lead->name); ?>" required>
@@ -76,7 +87,7 @@ update_lead($_POST);
         <label for="business_id">Business ID</label>
         <select type="text" name="business_id" id="business_id" class="form-select">
             <?php foreach(get_all_businesses() as $business): ?>
-                <option <?php echo esc_html(($lead->business_id == $business->id)? 'selected' : ''); ?> value="<?php echo esc_html($business->id); ?>"><?php echo esc_html($business->name); ?></option>
+                <option <?php echo esc_html(($lead->business_id == $business->ID)? 'selected' : ''); ?> value="<?php echo esc_html($business->ID); ?>"><?php echo esc_html($business->name); ?></option>
             <?php endforeach; ?>
         </select>
     </div>

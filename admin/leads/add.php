@@ -1,13 +1,25 @@
 <?php
+$actions = [
+    ['link' => 'admin.php?page=leadbook-leads', 'title' => 'Back To Leads Section'],
+];
+get_leadbook_header('Add Lead', $actions);
+
+// After Submit A Lead
 add_lead($_POST);
+
+// Check If Business Exists
 $businesses = get_all_businesses();
 if($businesses == null) {
     leadbook_redirect('businesses', 'add', 'Please add a business first', 'error');
 }
 ?>
-<h1>Add Lead</h1>
+<div class="container-fluid">
 <form class="row g-3 me-2" action="<?php echo esc_html(post_url()); ?>" method="post">
     <input type="hidden" name="action" value="add">
+    <div class="col-md-12">
+        <label for="Purpose">Purpose*</label>
+        <input type="text" name="purpose" id="Purpose" class="form-control" required>
+    </div>
     <div class="col-md-6">
         <label for="name">Name*</label>
         <input type="text" name="name" id="name" class="form-control" required>
@@ -76,7 +88,7 @@ if($businesses == null) {
         <label for="business_id">Business ID</label>
         <select type="text" name="business_id" id="business_id" class="form-select">
             <?php foreach(get_all_businesses() as $business): ?>
-                <option value="<?php echo esc_html($business->id); ?>"><?php echo esc_html($business->name); ?></option>
+                <option value="<?php echo esc_html($business->ID); ?>"><?php echo esc_html($business->name); ?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -84,3 +96,4 @@ if($businesses == null) {
         <button type="submit" class="btn btn-primary">Save Now</button>
     </div>
 </form>
+</div>

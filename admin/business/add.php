@@ -1,4 +1,9 @@
 <?php
+$actions = [
+    ['link' => 'admin.php?page=leadbook-businesses', 'title' => 'Back To Businesses Section'],
+];
+get_leadbook_header($title, $actions);
+
 add_business($_POST);
 ?>
 <div class="wrap">

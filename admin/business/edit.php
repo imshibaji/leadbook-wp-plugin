@@ -1,4 +1,9 @@
 <?php
+$actions = [
+    ['link' => 'admin.php?page=leadbook-businesses', 'title' => 'Back To Businesses Section'],
+];
+get_leadbook_header($title, $actions);
+
 $data = get_business(get_current_id());
 update_business($_POST);
 ?>
@@ -6,7 +11,7 @@ update_business($_POST);
     <h1>Edit Business</h1>
     <form class="row g-3 me-2" method="post" action="<?php echo esc_html(post_url()); ?>" enctype="multipart/form-data">
         <input type="hidden" name="action" value="edit">
-        <input type="hidden" name="id" value="<?php echo esc_html($data->id) ?? ''; ?>">
+        <input type="hidden" name="id" value="<?php echo esc_html($data->ID) ?? ''; ?>">
         <div class="col-md-6">
             <label for="name">Name*</label>
             <input type="text" name="name" id="name" class="form-control" value="<?php echo esc_html($data->name) ?>" required>

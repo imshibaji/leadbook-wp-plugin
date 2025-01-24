@@ -1,6 +1,8 @@
 <?php
 // Activate Modules
 add_action('init', function () {
+    leadbook_loader('admin/common/list_header');
+    leadbook_loader('admin/common/card');
     leadbook_loader('admin/business');
     leadbook_loader('admin/leads');
 });

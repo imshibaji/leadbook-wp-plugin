@@ -1,8 +1,13 @@
 <?php
-if(!class_exists('Leadbook_LeadsDB')):
-class Leadbook_LeadsDB {
+namespace Models;
+
+require_once LEADBOOK_MODELS . 'BaseModel.php';
+use Models\BaseModel;
+
+if(!class_exists('LeadsDB')):
+class LeadsDB extends BaseModel {
     private $db;
-    private $table = 'lb_leads';
+    protected $table = 'lb_leads';
     public function __construct() {
         global $wpdb;
         $this->db = $wpdb;
@@ -16,7 +21,8 @@ class Leadbook_LeadsDB {
     public function createTable() {
         $charset_collate = $this->db->get_charset_collate();
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (
-            id INT(11) NOT NULL AUTO_INCREMENT,
+            ID INT(11) NOT NULL AUTO_INCREMENT,
+            purpose VARCHAR(255) NOT NULL,
             name VARCHAR(255) NOT NULL,
             mobile VARCHAR(255) NOT NULL,
             email VARCHAR(255) default NULL,
@@ -32,7 +38,7 @@ class Leadbook_LeadsDB {
             business_id INT(11) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
-            PRIMARY KEY (id)
+            PRIMARY KEY (ID)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -58,11 +64,11 @@ class Leadbook_LeadsDB {
 
     public function update($id, $data) {
         $results = array_merge($data, array('updated_at' => gmdate('Y-m-d H:i:s')));
-        $this->db->update($this->table, $results, array('id' => $id));
+        $this->db->update($this->table, $results, array('ID' => $id));
     }
 
     public function delete($id) {
-        $this->db->delete($this->table, array('id' => $id));
+        $this->db->delete($this->table, array('ID' => $id));
     }
 
     public function getAll() {
@@ -70,47 +76,66 @@ class Leadbook_LeadsDB {
     }
 
     public function get($id) {
-        return $this->db->get_row("SELECT * FROM {$this->table} WHERE id = {$id}");
+        return $this->db->get_row("SELECT * FROM {$this->table} WHERE ID = {$id}");
     }
 
     public function count() {
         return $this->db->get_var("SELECT COUNT(*) FROM {$this->table}");
     }
 
-    public function getFllowups() {
-        $followups = new Leadbook_FollowupsDB();
-        $followups_table = $followups->getTable();
-        return $this->db->get_results("SELECT * FROM {$followups_table} INNER JOIN {$this->table} ON {$this->table}.id = {$followups_table}.lead_id");
+    // public function getByBusiness($business_id) {
+    //     return $this->db->get_results("SELECT * FROM {$this->table} WHERE business_id = {$business_id}");
+    // }
+    public function business(){
+        return $this->belongsTo(BusinessesDB::class, 'business_id');
     }
 
-    public function getFollowup($id) {
-        $followups = new Leadbook_FollowupsDB();
-        $followups_table = $followups->getTable();
-        return $this->db->get_row("SELECT * FROM {$followups_table} INNER JOIN {$this->table} ON {$this->table}.id = {$followups_table}.lead_id WHERE {$followups_table}.id = {$id}");
+    // public function getFllowups() {
+    //     $followups = new FollowupsDB();
+    //     $followups_table = $followups->getTable();
+    //     return $this->db->get_results("SELECT * FROM {$followups_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$followups_table}.lead_id");
+    // }
+
+    public function followups(){
+        return $this->hasMany(FollowupsDB::class, 'lead_id');
     }
 
-    public function getDeals(){
-        $deals = new Leadbook_DealsDB();
-        $deals_table = $deals->getTable();
-        return $this->db->get_results("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.id = {$deals_table}.lead_id");
+    // public function getFollowup($id) {
+    //     $followups = new FollowupsDB();
+    //     $followups_table = $followups->getTable();
+    //     return $this->db->get_row("SELECT * FROM {$followups_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$followups_table}.lead_id WHERE {$followups_table}.ID = {$id}");
+    // } 
+
+    // public function getDeals(){
+    //     $deals = new DealsDB();
+    //     $deals_table = $deals->getTable();
+    //     return $this->db->get_results("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$deals_table}.lead_id");
+    // }
+
+    // public function getDeal($id){
+    //     $deals = new DealsDB();
+    //     $deals_table = $deals->getTable();
+    //     return $this->db->get_row("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$deals_table}.lead_id WHERE {$deals_table}.ID = {$id}");
+    // }
+
+    public function deals(){
+        return $this->hasMany(DealsDB::class, 'lead_id');
     }
 
-    public function getDeal($id){
-        $deals = new Leadbook_DealsDB();
-        $deals_table = $deals->getTable();
-        return $this->db->get_row("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.id = {$deals_table}.lead_id WHERE {$deals_table}.id = {$id}");
-    }
+    // public function getTransections(){
+    //     $transections = new TransectionsDB();
+    //     $transections_table = $transections->getTable();
+    //     return $this->db->get_results("SELECT * FROM {$transections_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$transections_table}.lead_id");
+    // }
 
-    public function getTransections(){
-        $transections = new Leadbook_TransectionsDB();
-        $transections_table = $transections->getTable();
-        return $this->db->get_results("SELECT * FROM {$transections_table} INNER JOIN {$this->table} ON {$this->table}.id = {$transections_table}.lead_id");
-    }
+    // public function getTransection($id){
+    //     $transections = new TransectionsDB();
+    //     $transections_table = $transections->getTable();
+    //     return $this->db->get_row("SELECT * FROM {$transections_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$transections_table}.lead_id WHERE {$transections_table}.ID = {$id}");
+    // }
 
-    public function getTransection($id){
-        $transections = new Leadbook_TransectionsDB();
-        $transections_table = $transections->getTable();
-        return $this->db->get_row("SELECT * FROM {$transections_table} INNER JOIN {$this->table} ON {$this->table}.id = {$transections_table}.lead_id WHERE {$transections_table}.id = {$id}");
+    public function transections(){
+        return $this->hasMany(TransectionsDB::class, 'lead_id');
     }
 
     public function deleteByBusinessId($business_id) {

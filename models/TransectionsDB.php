@@ -1,8 +1,13 @@
 <?php
-if(!class_exists('Leadbook_TransectionsDB')):
-class Leadbook_TransectionsDB {
+namespace Models;
+
+require_once LEADBOOK_MODELS . 'BaseModel.php';
+use Models\BaseModel;
+
+if(!class_exists('TransectionsDB')):
+class TransectionsDB extends BaseModel {
     private $db;
-    private $table = 'lb_transections';
+    protected $table = 'lb_transections';
     public function __construct() {
         global $wpdb;
         $this->db = $wpdb;
@@ -16,7 +21,7 @@ class Leadbook_TransectionsDB {
     public function createTable() {
         $charset_collate = $this->db->get_charset_collate();
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (
-            id INT(11) NOT NULL AUTO_INCREMENT,
+            ID INT(11) NOT NULL AUTO_INCREMENT,
             type VARCHAR(255) NOT NULL,
             description VARCHAR(255) NOT NULL,
             amount FLOAT NOT NULL,
@@ -53,7 +58,7 @@ class Leadbook_TransectionsDB {
     }
 
     public function get($id) {
-        return $this->db->get_row("SELECT * FROM {$this->table} WHERE id = {$id}");
+        return $this->db->get_row("SELECT * FROM {$this->table} WHERE ID = {$id}");
     }
 
     public function insert($data) {
@@ -63,11 +68,11 @@ class Leadbook_TransectionsDB {
 
     public function update($id, $data) {
         $results = array_merge($data, array('updated_at' => gmdate('Y-m-d H:i:s')));
-        return $this->db->update($this->table, $results, array('id' => $id));
+        return $this->db->update($this->table, $results, array('ID' => $id));
     }
 
     public function delete($id) {
-        return $this->db->delete($this->table, array('id' => $id));
+        return $this->db->delete($this->table, array('ID' => $id));
     }
 
     public function deleteByLeadId($lead_id) {

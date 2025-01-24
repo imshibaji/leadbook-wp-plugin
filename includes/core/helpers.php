@@ -17,29 +17,12 @@ function leadbook_loader($file_name)
 
 
 
-function leadbook_get_loader($file_name)
-{
-    if (file_exists(LEADBOOK_PATH . $file_name . '.php')) {
-        require_once LEADBOOK_PATH . $file_name . '.php';
-    } else if (file_exists(LEADBOOK_PATH . $file_name . '/index.php')) {
-        require_once LEADBOOK_PATH . $file_name . '/index.php';
-    } else if (file_exists(LEADBOOK_PATH . $file_name . '/functions.php')) {
-        require_once LEADBOOK_PATH . $file_name . '/functions.php';
-    } else if (file_exists(LEADBOOK_PATH . $file_name . '/' . $file_name . '.php')) {
-        require_once LEADBOOK_PATH . $file_name . '/' . $file_name . '.php';
-    } else if (file_exists($file_name . '.php')) {
-        require_once $file_name . '.php';
-    }
-}
-
-
-
 function leadbook_model_object($class_name)
 {
     if (file_exists(LEADBOOK_MODELS . $class_name . '.php')) {
         require_once LEADBOOK_MODELS . $class_name . '.php';
     }
-    $new_class_name = 'Leadbook_' . $class_name;
+    $new_class_name = $class_name;
     return new $new_class_name();
 }
 

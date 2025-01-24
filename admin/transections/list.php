@@ -1,1 +1,4 @@
-<h4>Transections List</h4>
+<?php
+get_leadbook_header($title, $actions);
+list_header('All Transections');
+?>

@@ -1,3 +1,6 @@
+<?php 
+function get_leadbook_header($title=null, $actions=null) {
+?>
 <div class="mt-3">
     <div class="row">
         <div class="col-6">
@@ -19,3 +22,4 @@
 </div>
 <hr>
 <?php leadbook_display_message(); ?>
+<?php }

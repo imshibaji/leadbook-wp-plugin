@@ -1,18 +1,27 @@
 <?php
-if(!class_exists('Leadbook_BusinessesDB')):
-class Leadbook_BusinessesDB {
+namespace Models;
+
+require_once LEADBOOK_MODELS . 'BaseModel.php';
+use Models\BaseModel;
+
+if(!class_exists('BusinessesDB')):
+class BusinessesDB extends BaseModel {
     private $db;
-    private $table = 'lb_business';
+    protected $table = 'lb_business';
     public function __construct() {
         global $wpdb;
         $this->db = $wpdb;
         $this->table = $wpdb->prefix . $this->table;
     }
 
+    public function getTable() {
+        return $this->table;
+    }
+
     public function createTable() {
         $charset_collate = $this->db->get_charset_collate();
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (
-            id INT(11) NOT NULL AUTO_INCREMENT,
+            ID INT(11) NOT NULL AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             mobile VARCHAR(255) NOT NULL,
@@ -39,7 +48,7 @@ class Leadbook_BusinessesDB {
 
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
-            PRIMARY KEY (id)
+            PRIMARY KEY (ID)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -75,17 +84,20 @@ class Leadbook_BusinessesDB {
 
     public function update($id, $data) {
         $data['updated_at'] = gmdate('Y-m-d H:i:s');
-        return $this->db->update($this->table, $data, array('id' => $id));
+        return $this->db->update($this->table, $data, array('ID' => $id));
     }
 
     public function delete($id) {
-        return $this->db->delete($this->table, array('id' => $id));
+        return $this->db->delete($this->table, array('ID' => $id));
     }
 
-    public function getLeads() {
-        $leads = new Leadbook_LeadsDB();
-        $leads_table = $leads->getTable();
-        return $this->db->get_results("SELECT * FROM {$leads_table} INNER JOIN {$this->table} ON {$this->table}.id = {$leads_table}.business_id");
+    // public function getLeads() {
+    //     $leads = new Leadbook_LeadsDB();
+    //     $leads_table = $leads->getTable();
+    //     return $this->db->get_results("SELECT * FROM {$leads_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$leads_table}.business_id");
+    // }
+    public function leads(){
+        return $this->hasMany(LeadsDB::class, 'business_id');
     }
 }
 endif;

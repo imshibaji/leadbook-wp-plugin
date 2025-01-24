@@ -1,8 +1,13 @@
 <?php
-if(!class_exists('Leadbook_DealsDB')):
-class Leadbook_DealsDB{
+namespace Models;
+
+require_once LEADBOOK_MODELS . 'BaseModel.php';
+use Models\BaseModel;
+
+if(!class_exists('DealsDB')):
+class DealsDB extends BaseModel{
     private $db;
-    private $table = 'lb_deals';
+    protected $table = 'lb_deals';
     public function __construct(){
         global $wpdb;
         $this->db = $wpdb;
@@ -16,7 +21,7 @@ class Leadbook_DealsDB{
     public function createTable(){
         $charset_collate = $this->db->get_charset_collate();
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (
-            id INT(11) NOT NULL AUTO_INCREMENT,
+            ID INT(11) NOT NULL AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
             description VARCHAR(255) NOT NULL,
             currency_code VARCHAR(5) NOT NULL,
@@ -31,7 +36,7 @@ class Leadbook_DealsDB{
             business_id INT(11) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
-            PRIMARY KEY (id)
+            PRIMARY KEY (ID)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -58,11 +63,11 @@ class Leadbook_DealsDB{
 
     public function update($id, $data){
         $results = array_merge($data, array('updated_at' => gmdate('Y-m-d H:i:s')));
-        $this->db->update($this->table, $results, array('id' => $id));
+        $this->db->update($this->table, $results, array('ID' => $id));
     }
 
     public function delete($id){
-        $this->db->delete($this->table, array('id' => $id));
+        $this->db->delete($this->table, array('ID' => $id));
     }
 
     public function getAll(){
@@ -70,7 +75,7 @@ class Leadbook_DealsDB{
     }
 
     public function get($id){
-        return $this->db->get_row("SELECT * FROM {$this->table} WHERE id = {$id}");
+        return $this->db->get_row("SELECT * FROM {$this->table} WHERE ID = {$id}");
     }
 
     public function count(){

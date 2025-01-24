@@ -1,11 +1,4 @@
 <?php
-// add_action( 'plugins_loaded', 'myplugin_update_db_check' );
-// function myplugin_update_db_check() {
-//     global $leadbook_db_version;
-//     if ( get_site_option( 'leadbook_db_version' ) != $leadbook_db_version ) {
-//         leadbook_activation();
-//     }
-// }
 
 function leadbook_activation() {
     $businesses_db = leadbook_model_object('BusinessesDB');
