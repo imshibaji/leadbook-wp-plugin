@@ -22,6 +22,10 @@ function leadbook_model_object($class_name)
     if (file_exists(LEADBOOK_MODELS . $class_name . '.php')) {
         require_once LEADBOOK_MODELS . $class_name . '.php';
     }
+    // namespace added
+    if(class_exists('Models\\' . $class_name)){
+        $class_name = 'Models\\' . $class_name;
+    }
     $new_class_name = $class_name;
     return new $new_class_name();
 }

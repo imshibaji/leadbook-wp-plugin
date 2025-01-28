@@ -7,8 +7,8 @@ function previous_url() {
     return sanitize_text_field(wp_unslash($_SERVER['HTTP_REFERER'] ?? ''));
 }
 
-function leadbook_navigate($page = 'dashboard', array $data = []) {
-    $url = admin_url('admin.php?page=leadbook-' . $page);
+function leadbook_navigate($page = null, array $data = []) {
+    $url = admin_url('admin.php?page=' . ((!isset($page) || ($page == 'dashboard')) ? 'leadbook' : 'leadbook-' . $page));
     extract($data);
     if (isset($action) && $action) {
         $url .= '&action=' . $action;

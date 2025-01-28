@@ -35,8 +35,8 @@ class Admin
         leadbook_loader('admin/business');
         leadbook_loader('admin/leads');
         leadbook_loader('admin/followups');
-        // leadbook_loader('admin/deals');
-        // leadbook_loader('admin/transections');
+        leadbook_loader('admin/deals');
+        leadbook_loader('admin/transections');
         // leadbook_loader('admin/about');
     }
 
@@ -50,7 +50,7 @@ class Admin
         wp_enqueue_style('leadbook-admin-style', LEADBOOK_ASSETS_URL . 'css/admin-style.css', [], LEADBOOK_VERSION);
 
         // Scripts
-        wp_enqueue_script('leadbook-bootstrap-script', LEADBOOK_ASSETS_URL . 'js/bootstrap.bundle.min.js', [], '5.0.0', true);
+        wp_enqueue_script('leadbook-bootstrap-script', LEADBOOK_ASSETS_URL . 'js/bootstrap.bundle.min.js', ['jquery'], '5.0.0', true);
         wp_enqueue_script('leadbook-admin-script', LEADBOOK_ASSETS_URL . 'js/admin-script.js', [], LEADBOOK_VERSION, true);
     }
 
@@ -84,20 +84,20 @@ class Admin
 
         add_submenu_page(
             'leadbook',
-            'Followups Section',
-            'Followups',
-            'manage_options',
-            'leadbook-followups',
-            [$this, 'followups']
-        );
-
-        add_submenu_page(
-            'leadbook',
             'Deals Section',
             'Deals',
             'manage_options',
             'leadbook-deals',
             [$this, 'deals']
+        );
+
+        add_submenu_page(
+            'leadbook',
+            'Notifications Section',
+            'Notifications',
+            'manage_options',
+            'leadbook-followups',
+            [$this, 'followups']
         );
 
         add_submenu_page(
@@ -152,7 +152,7 @@ class Admin
             ['link' => 'admin.php?page=leadbook-followups&action=add', 'title' => 'Add New'],
             ['link' => 'admin.php?page=leadbook-followups&action=export', 'title' => 'Export CSV'],
         ];
-        leadbook_render_admin('followups', ['title' => 'Followups Section', 'actions' => $actions]);
+        leadbook_render_admin('followups', ['title' => 'Notifications Section', 'actions' => $actions]);
     }
 
     function deals()

@@ -46,6 +46,9 @@ class BusinessesDB extends BaseModel {
             aadhar_image VARCHAR(255) default NULL,
             bank_image VARCHAR(255) default NULL,
 
+
+            created_by INT(11) NOT NULL,
+            managed_by INT(11) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
             PRIMARY KEY (ID)
@@ -68,8 +71,9 @@ class BusinessesDB extends BaseModel {
         return $this->db->get_var("SELECT COUNT(*) FROM {$this->table}");
     }
 
-    public function getAll() {
-        return $this->db->get_results("SELECT * FROM {$this->table}");
+    public function getAll(array $data=['order'=>'DESC', 'limit'=>20]) {
+        extract($data);
+        return $this->db->get_results("SELECT * FROM {$this->table} ORDER BY id {$order} LIMIT {$limit}");
     }
 
     public function get($id) {

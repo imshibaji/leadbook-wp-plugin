@@ -44,8 +44,14 @@ add_followup($_POST);
                             <label for="type">Type</label>
                             <select name="type" id="type" class="form-control" required>
                                 <option value="call">Call</option>
+                                <option value="sms">SMS</option>
                                 <option value="email">Email</option>
-                                <option value="text">Text</option>
+                                <option value="meet">Google Meet</option>
+                                <option value="zoom">Zoom Meeting</option>
+                                <option value="webinar">Webinar</option>
+                                <option value="skype">Skype</option>
+                                <option value="meeting">Meeting</option>
+                                <option value="visit">Visit</option>
                                 <option value="other">Other</option>
                             </select>
                         </div>
@@ -61,6 +67,22 @@ add_followup($_POST);
                             <select name="business_id" id="business_id" class="form-control" required>
                                 <?php foreach(get_all_businesses() as $business): ?>
                                     <option value="<?php echo esc_html($business->ID); ?>"><?php echo esc_html($business->name); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="created_by">Created By</label>
+                            <select name="created_by" id="created_by" class="form-control" required>
+                                <?php foreach(get_users() as $user): ?>
+                                    <option value="<?php echo esc_html($user->ID); ?>"><?php echo esc_html($user->first_name); ?> <?php echo esc_html($user->last_name); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="managed_by">Managed By</label>
+                            <select name="managed_by" id="managed_by" class="form-control" required>
+                                <?php foreach(get_users() as $user): ?>
+                                    <option value="<?php echo esc_html($user->ID); ?>"><?php echo esc_html($user->first_name); ?> <?php echo esc_html($user->last_name); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

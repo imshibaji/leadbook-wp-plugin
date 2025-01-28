@@ -27,6 +27,7 @@ class DealsDB extends BaseModel{
             currency_code VARCHAR(5) NOT NULL,
             amount FLOAT default 0,
             discount FLOAT default 0,
+            discount_type VARCHAR(10) NOT NULL,
             advance FLOAT default 0,
             balance FLOAT default 0,
             due_date DATETIME default now(),
@@ -34,6 +35,8 @@ class DealsDB extends BaseModel{
             status VARCHAR(255) NOT NULL,
             lead_id INT(11) NOT NULL,
             business_id INT(11) NOT NULL,
+            created_by INT(11) NOT NULL,
+            managed_by INT(11) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
             PRIMARY KEY (ID)
@@ -53,25 +56,29 @@ class DealsDB extends BaseModel{
     }
 
     public function truncate(){
-        $this->db->query("TRUNCATE TABLE {$this->table}");
+        return $this->db->query("TRUNCATE TABLE {$this->table}");
     }
 
     public function insert($data){
         $results = array_merge($data, array('created_at' => gmdate('Y-m-d H:i:s'), 'updated_at' => gmdate('Y-m-d H:i:s')));
         $this->db->insert($this->table, $results);
+        return $this->db->insert_id;
     }
 
     public function update($id, $data){
         $results = array_merge($data, array('updated_at' => gmdate('Y-m-d H:i:s')));
         $this->db->update($this->table, $results, array('ID' => $id));
+        return $id;
     }
 
     public function delete($id){
         $this->db->delete($this->table, array('ID' => $id));
+        return $id;
     }
 
-    public function getAll(){
-        return $this->db->get_results("SELECT * FROM {$this->table}");
+    public function getAll(array $data=['order'=>'DESC', 'limit'=>20]) {
+        extract($data);
+        return $this->db->get_results("SELECT * FROM {$this->table} ORDER BY id {$order} LIMIT {$limit}");
     }
 
     public function get($id){

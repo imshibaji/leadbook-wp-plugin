@@ -1,36 +1,25 @@
-<?php 
+<?php
 require_once LEADBOOK_MODELS . 'BusinessesDB.php';
+
 use Models\BusinessesDB;
 
-function get_all_businesses() {
+function get_all_businesses()
+{
     $businessesDb = new BusinessesDB();
     $businesses = $businessesDb->getAll();
     return $businesses;
 }
 
-function business_list_for_dashboard($contents) {
-    $datas = (array) $contents;
-    // resheaping the string
-    $out = '<ul class="list-group list-group-flush">';
-    $out .= implode(array_map(function($data) {
-        return '<li class="list-group-item">' . $data->name ?? '' . '</li>';
-    }, $datas));
-    $out .= '</ul>';
-    return $out;
-}
-
-function get_business($id) {
-    if(isset($_GET['id'])) {
-        $businessesDb = new BusinessesDB();
-        $business = $businessesDb->get($id);
-    }else{
-        leadbook_redirect('businesses', 'list', 'Invalid Business ID', 'error');
-    }
+function get_business($id)
+{
+    $businessesDb = new BusinessesDB();
+    $business = $businessesDb->get($id);
     return $business;
 }
 
-function add_business($datas) {
-    if(isset($datas['action']) && $datas['action'] == 'add') {
+function add_business($datas)
+{
+    if (isset($datas['action']) && $datas['action'] == 'add') {
         $data = [
             'name' => $datas['name'],
             'email' => $datas['email'],
@@ -53,7 +42,9 @@ function add_business($datas) {
             'aadhar_number' => $datas['aadhar_number'],
             'pan_image' => $datas['pan_image'],
             'aadhar_image' => $datas['aadhar_image'],
-            'bank_image' => $datas['bank_image']
+            'bank_image' => $datas['bank_image'],
+            'created_by' => $datas['created_by'],
+            'managed_by' => $datas['managed_by'],
         ];
         $businesses = new BusinessesDB();
         $businesses->insert($data);
@@ -61,8 +52,9 @@ function add_business($datas) {
     }
 }
 
-function update_business($datas) {
-    if(isset($datas['action']) && $datas['action'] == 'edit') {
+function update_business($datas)
+{
+    if (isset($datas['action']) && $datas['action'] == 'edit') {
         $data = [
             'name' => $datas['name'],
             'email' => $datas['email'],
@@ -85,7 +77,9 @@ function update_business($datas) {
             'aadhar_number' => $datas['aadhar_number'],
             'pan_image' => $datas['pan_image'] ?? '',
             'aadhar_image' => $datas['aadhar_image'] ?? '',
-            'bank_image' => $datas['bank_image'] ?? ''
+            'bank_image' => $datas['bank_image'] ?? '',
+            'created_by' => $datas['created_by'],
+            'managed_by' => $datas['managed_by'],
         ];
         $businesses = new BusinessesDB();
         $businesses->update($datas['id'], $data);
@@ -93,10 +87,40 @@ function update_business($datas) {
     }
 }
 
-function delete_business($datas) {
-    if(isset($datas['action']) && $datas['action'] == 'delete') {
+function delete_business($datas)
+{
+    if (isset($datas['action']) && $datas['action'] == 'delete') {
         $businesses = new BusinessesDB();
         $businesses->delete($datas['id']);
         leadbook_redirect('businesses', 'list', 'Business Deleted Successfully', 'success');
     }
+}
+
+
+function business_list_for_dashboard()
+{
+    ob_start();
+?>
+    <div class="container-fluid">
+        <table class="table table-striped">
+            <thead>
+                <tr class="text-center">
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach (get_all_businesses() as $data): ?>
+                    <tr class="text-center">
+                        <td><?php echo esc_html($data->name); ?></td>
+                        <td>
+                            <a href="<?php echo esc_html(leadbook_navigate('businesses', ['action' => 'edit', 'id' => $data->ID])); ?>">Edit</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php
+    return ob_get_clean();
 }

@@ -7,23 +7,11 @@ function get_all_followups(){
     $followups = $followupsDb->getAll();
 
     if(isset($_GET['business_id']) && $_GET['business_id'] != '') {
-        // $business_id = sanitize_text_field(wp_unslash($_GET['business_id']));
-        // $followups = $followupsDb->getByBusiness($business_id);
-        $followups = $followupsDb->business();
+        $business_id = sanitize_text_field(wp_unslash($_GET['business_id']));
+        $followups = $followupsDb->getByBusiness($business_id);
         return $followups;
     }
     return $followups;
-}
-
-function followup_list_for_dashboard($contents) {
-    $datas = (array) $contents;
-    // resheaping the string
-    $out = '<ul class="list-group list-group-flush">';
-    $out .= implode(array_map(function($data) {
-        return '<li class="list-group-item">' . $data->title ?? '' . '</li>';
-    }, $datas));
-    $out .= '</ul>';
-    return $out;
 }
 
 if(!function_exists('get_business_info')){
@@ -97,4 +85,35 @@ if(!function_exists('delete_followup')) {
         $followupsDb = new Models\FollowupsDB();
         $followupsDb->delete($id);
     }
+}
+
+function followup_list_for_dashboard(){
+ ob_start();
+ ?>
+<div class="container-fluid">
+<table class="table table-striped">
+    <thead>
+        <tr class="text-center">
+            <th>Lead</th>
+            <th>Description</th>
+            <th>status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach(get_all_followups() as $data): ?>
+            <tr class="text-center">
+                <td><?php echo esc_html(get_lead_info($data->lead_id)->name ?? ''); ?></td>
+                <td class="text-start"><?php echo esc_html($data->description); ?></td>
+                <td><?php echo esc_html($data->status); ?></td>
+                <td>
+                    <a href="<?php echo esc_html(leadbook_navigate('followups', ['action' => 'edit', 'id' => $data->ID])); ?>">Edit</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+</div>
+ <?php
+ return ob_get_clean();
 }

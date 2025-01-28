@@ -51,8 +51,14 @@ update_followup($_POST);
                             <label for="type">Type</label>
                             <select name="type" id="type" class="form-control" required>
                                 <option <?php if($data->type == 'call') echo 'selected'; ?> value="call">Call</option>
+                                <option <?php if($data->type == 'sms') echo 'selected'; ?> value="sms">SMS</option>
                                 <option <?php if($data->type == 'email') echo 'selected'; ?> value="email">Email</option>
-                                <option <?php if($data->type == 'text') echo 'selected'; ?> value="text">Text</option>
+                                <option <?php if($data->type == 'meet') echo 'selected'; ?> value="meet">Google Meet</option>
+                                <option <?php if($data->type == 'zoom') echo 'selected'; ?> value="zoom">Zoom Meeting</option>
+                                <option <?php if($data->type == 'webinar') echo 'selected'; ?> value="webinar">Webinar</option>
+                                <option <?php if($data->type == 'skype') echo 'selected'; ?> value="skype">Skype</option>
+                                <option <?php if($data->type == 'meeting') echo 'selected'; ?> value="meeting">Meeting</option>
+                                <option <?php if($data->type == 'visit') echo 'selected'; ?> value="visit">Visit</option>
                                 <option <?php if($data->type == 'other') echo 'selected'; ?> value="other">Other</option>
                             </select>
                         </div>

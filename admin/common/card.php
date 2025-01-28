@@ -13,8 +13,8 @@ function card_ui($title, $content, $footer = '') {
     // Generate the card HTML
     echo "
         <div class='card' style='padding:0; max-width:none;'>
-            <div class='card-header'>" . htmlspecialchars($title) . "</div>
-            <div class='card-body' style='height:320px; overflow-y:scroll; margin:8px 0;'>" . ($contentData ?? $content) . "</div>
+            <div class='card-header'>" . (gettype($title) == 'object'? $title() : $title) . "</div>
+            <div class='card-body' style='height:320px; overflow-y:scroll; margin:8px 0; padding:0px'>" . ($contentData ?? $content) . "</div>
             " . ($footer ? "<div class='card-footer'>" . (gettype($footer) == 'object'? $footer() : $footer) . "</div>" : "") . "
         </div>
     ";

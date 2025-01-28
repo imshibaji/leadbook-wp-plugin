@@ -28,9 +28,10 @@ class FollowupsDB extends BaseModel {
             type VARCHAR(255) NOT NULL,
             next_reminder DATETIME NOT NULL,
             
-            user_id INT(11) NOT NULL,
             lead_id INT(11) NOT NULL,
             business_id INT(11) NOT NULL,
+            created_by INT(11) NOT NULL,
+            managed_by INT(11) NOT NULL,
             created_at DATETIME NOT NULL,
             updated_at DATETIME NOT NULL,
             PRIMARY KEY (ID)
@@ -46,25 +47,26 @@ class FollowupsDB extends BaseModel {
     }
 
     public function truncate() {
-        $this->db->query("TRUNCATE TABLE {$this->table}");
+        return $this->db->query("TRUNCATE TABLE {$this->table}");
     }
 
     public function insert($data) {
         $results = array_merge($data, array('created_at' => gmdate('Y-m-d H:i:s'), 'updated_at' => gmdate('Y-m-d H:i:s')));
-        $this->db->insert($this->table, $results);
+        return $this->db->insert($this->table, $results);
     }
 
     public function update($id, $data) {
         $results = array_merge($data, array('updated_at' => gmdate('Y-m-d H:i:s')));
-        $this->db->update($this->table, $results, array('ID' => $id));
+        return $this->db->update($this->table, $results, array('ID' => $id));
     }
 
     public function delete($id) {
-        $this->db->delete($this->table, array('ID' => $id));
+        return $this->db->delete($this->table, array('ID' => $id));
     }
 
-    public function getAll() {
-        return $this->db->get_results("SELECT * FROM {$this->table}");
+    public function getAll(array $data=['order'=>'DESC', 'limit'=>20]) {
+        extract($data);
+        return $this->db->get_results("SELECT * FROM {$this->table} ORDER BY id {$order} LIMIT {$limit}");
     }
 
     public function get($id) {
@@ -87,20 +89,20 @@ class FollowupsDB extends BaseModel {
         return $this->belongsTo(BusinessesDB::class, 'business_id');
     }
 
-    // public function getByLead($id) {
-    //     return $this->db->get_row("SELECT * FROM {$this->table} WHERE lead_id = {$id}");
-    // }
+    public function getByLead($id) {
+        return $this->db->get_row("SELECT * FROM {$this->table} WHERE lead_id = {$id}");
+    }
 
-    // public function getByBusiness($id) {
-    //     return $this->db->get_results("SELECT * FROM {$this->table} WHERE business_id = {$id}");
-    // }
+    public function getByBusiness($id) {
+        return $this->db->get_results("SELECT * FROM {$this->table} WHERE business_id = {$id}");
+    }
 
     public function deleteByLead($id) {
-        $this->db->delete($this->table, array('lead_id' => $id));
+        return $this->db->delete($this->table, array('lead_id' => $id));
     }
 
     public function deleteByBusiness($id) {
-        $this->db->delete($this->table, array('business_id' => $id));
+        return $this->db->delete($this->table, array('business_id' => $id));
     }
 }
 endif;

@@ -1,5 +1,5 @@
 <?php
-function list_header($title = 'Leadbook Dashboard', $nav_to='')
+function list_header($title = 'Leadbook Dashboard', $nav_to=null)
 {
 ?>
     <div class="row">
@@ -7,7 +7,7 @@ function list_header($title = 'Leadbook Dashboard', $nav_to='')
             <h4><?php echo $title ?></h4>
         </div>
         <div class="col-md-4">
-            <?php if($nav_to != ''): ?>
+            <?php if($nav_to != null): ?>
             <div class="input-group mb-3">
                 <select name="business_id" id="business_id" class="form-select">
                     <option value="">Select Business</option>
