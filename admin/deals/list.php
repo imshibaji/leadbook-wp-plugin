@@ -1,6 +1,6 @@
 <?php
 get_leadbook_header($title, $actions);
-list_header('All Deals', 'deals');
+list_header('All Invoices', 'deals');
 ?>
 <div class="container-fluid">
     <div class="card" style="padding: 0; max-width: 100%;">
@@ -11,7 +11,6 @@ list_header('All Deals', 'deals');
                         <tr class="text-center">
                             <th>name</th>
                             <th>Description</th>
-                            <th>Code</th>
                             <th>PayblAmt</th>
                             <th>Discount</th>
                             <th>Advance</th>
@@ -26,17 +25,30 @@ list_header('All Deals', 'deals');
                         <?php foreach (get_all_deals() as $data): ?>
                             <tr class="text-center">
                                 <td><?php echo esc_html($data->name); ?></td>
-                                <td class="text-start"><?php echo esc_html($data->description); ?></td>
-                                <td><?php echo esc_html($data->currency_code); ?></td>
-                                <td><?php echo esc_html($data->advance + $data->balance); ?></td>
-                                <td><?php echo esc_html($data->discount); ?></td>
-                                <td><?php echo esc_html($data->advance); ?></td>
-                                <td><?php echo esc_html($data->balance); ?></td>
-                                <td><?php echo esc_html(date('d-m-Y', strtotime($data->due_date))); ?></td>
-                                <td><?php echo esc_html($data->total); ?></td>
-                                <td><?php echo esc_html(ucfirst($data->status)); ?></td>
+                                <td><?php echo esc_html(ddjsc($data->description)); ?></td>
                                 <td>
-                                <a href="<?php echo esc_html(leadbook_navigate('deals', ['action' => 'view', 'id' => $data->ID])); ?>">View</a>
+                                    <?php echo esc_html($data->advance + $data->balance); ?>
+                                    <?php echo esc_html($data->currency_code); ?>
+                                </td>
+                                <td>
+                                    <?php echo esc_html($data->discount); ?>
+                                    <?php echo $data->discount_type == 'percentage' ? '%' : esc_html($data->currency_code); ?>
+                                </td>
+                                <td>
+                                    <?php echo esc_html($data->advance); ?>
+                                    <?php echo esc_html($data->currency_code); ?></td>
+                                <td>
+                                    <?php echo esc_html($data->balance); ?>
+                                    <?php echo esc_html($data->currency_code); ?>
+                                </td>
+                                <td><?php echo esc_html(date('d-m-Y', strtotime($data->due_date))); ?></td>
+                                <td>
+                                    <?php echo esc_html($data->total); ?>
+                                    <?php echo esc_html($data->currency_code); ?>
+                                </td>
+                                <td><?php echo esc_html(deal_payment_status($data)); ?></td>
+                                <td>
+                                    <a href="<?php echo esc_html(leadbook_navigate('deals', ['action' => 'view', 'id' => $data->ID])); ?>">View</a>
                                     <a href="<?php echo esc_html(leadbook_navigate('deals', ['action' => 'edit', 'id' => $data->ID])); ?>">Edit</a>
                                 </td>
                             </tr>

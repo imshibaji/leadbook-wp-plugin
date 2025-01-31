@@ -1,11 +1,8 @@
 <?php
 namespace Models;
 
-require_once LEADBOOK_MODELS . 'BaseModel.php';
-use Models\BaseModel;
-
 if(!class_exists('LeadsDB')):
-class LeadsDB extends BaseModel {
+class LeadsDB {
     private $db;
     protected $table = 'lb_leads';
     public function __construct() {
@@ -92,9 +89,9 @@ class LeadsDB extends BaseModel {
     public function getByBusiness($business_id) {
         return $this->db->get_results("SELECT * FROM {$this->table} WHERE business_id = {$business_id}");
     }
-    public function business(){
-        return $this->belongsTo(BusinessesDB::class, 'business_id');
-    }
+    // public function business(){
+    //     return $this->belongsTo(BusinessesDB::class, 'business_id');
+    // }
 
     // public function getFllowups() {
     //     $followups = new FollowupsDB();
@@ -102,9 +99,9 @@ class LeadsDB extends BaseModel {
     //     return $this->db->get_results("SELECT * FROM {$followups_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$followups_table}.lead_id");
     // }
 
-    public function followups(){
-        return $this->hasMany(FollowupsDB::class, 'lead_id');
-    }
+    // public function followups(){
+    //     return $this->hasMany(FollowupsDB::class, 'lead_id');
+    // }
 
     // public function getFollowup($id) {
     //     $followups = new FollowupsDB();
@@ -112,11 +109,11 @@ class LeadsDB extends BaseModel {
     //     return $this->db->get_row("SELECT * FROM {$followups_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$followups_table}.lead_id WHERE {$followups_table}.ID = {$id}");
     // } 
 
-    // public function getDeals(){
-    //     $deals = new DealsDB();
-    //     $deals_table = $deals->getTable();
-    //     return $this->db->get_results("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$deals_table}.lead_id");
-    // }
+    public function deals(){
+        $deals = new DealsDB();
+        $deals_table = $deals->getTable();
+        return $this->db->get_results("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$deals_table}.lead_id");
+    }
 
     // public function getDeal($id){
     //     $deals = new DealsDB();
@@ -124,9 +121,9 @@ class LeadsDB extends BaseModel {
     //     return $this->db->get_row("SELECT * FROM {$deals_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$deals_table}.lead_id WHERE {$deals_table}.ID = {$id}");
     // }
 
-    public function deals(){
-        return $this->hasMany(DealsDB::class, 'lead_id');
-    }
+    // public function deals(){
+    //     return $this->hasMany(DealsDB::class, 'lead_id');
+    // }
 
     // public function getTransections(){
     //     $transections = new TransectionsDB();
@@ -140,9 +137,9 @@ class LeadsDB extends BaseModel {
     //     return $this->db->get_row("SELECT * FROM {$transections_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$transections_table}.lead_id WHERE {$transections_table}.ID = {$id}");
     // }
 
-    public function transections(){
-        return $this->hasMany(TransectionsDB::class, 'lead_id');
-    }
+    // public function transections(){
+    //     return $this->hasMany(TransectionsDB::class, 'lead_id');
+    // }
 
     public function deleteByBusinessId($business_id) {
         return $this->db->delete($this->table, array('business_id' => $business_id));

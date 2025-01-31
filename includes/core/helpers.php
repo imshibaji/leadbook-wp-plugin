@@ -1,5 +1,23 @@
 <?php
 
+function lead_book_header() {
+    do_action('leadbook_header');
+}
+
+function leadbook_convert_amount($num) {
+    if ($num >= 1000000000) { // More than 100 Cr (Billion)
+        return round($num / 1000000000, 2) . 'B';
+    } elseif ($num >= 10000000) { // More than 1 Cr (Crore)
+        return round($num / 10000000, 2) . 'Cr';
+    } elseif ($num >= 100000) { // More than 1 Lakh (Lakh)
+        return round($num / 100000, 2) . 'L';
+    } elseif ($num >= 10000) { // More than 10 Thousand (K)
+        return round($num / 1000, 2) . 'K';
+    } else {
+        return $num;
+    }
+}
+
 function leadbook_loader($file_name)
 {
     if (file_exists(LEADBOOK_PATH . $file_name . '.php')) {

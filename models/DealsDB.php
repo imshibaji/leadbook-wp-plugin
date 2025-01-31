@@ -1,11 +1,8 @@
 <?php
 namespace Models;
 
-require_once LEADBOOK_MODELS . 'BaseModel.php';
-use Models\BaseModel;
-
 if(!class_exists('DealsDB')):
-class DealsDB extends BaseModel{
+class DealsDB {
     private $db;
     protected $table = 'lb_deals';
     public function __construct(){
@@ -23,12 +20,15 @@ class DealsDB extends BaseModel{
         $sql = "CREATE TABLE IF NOT EXISTS {$this->table} (
             ID INT(11) NOT NULL AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
-            description VARCHAR(255) NOT NULL,
+            description JSON NOT NULL,
             currency_code VARCHAR(5) NOT NULL,
             amount FLOAT default 0,
             discount FLOAT default 0,
             discount_type VARCHAR(10) NOT NULL,
             advance FLOAT default 0,
+            tax_name VARCHAR(255) NULL,
+            tax_amount FLOAT default 0,
+            tax_type VARCHAR(10) NOT NULL,
             balance FLOAT default 0,
             due_date DATETIME default now(),
             total FLOAT default 0,

@@ -95,6 +95,7 @@ function followup_list_for_dashboard(){
     <thead>
         <tr class="text-center">
             <th>Lead</th>
+            <th>Title</th>
             <th>Description</th>
             <th>status</th>
             <th>Actions</th>
@@ -104,6 +105,7 @@ function followup_list_for_dashboard(){
         <?php foreach(get_all_followups() as $data): ?>
             <tr class="text-center">
                 <td><?php echo esc_html(get_lead_info($data->lead_id)->name ?? ''); ?></td>
+                <td><?php echo $data->title; ?></td>
                 <td class="text-start"><?php echo esc_html($data->description); ?></td>
                 <td><?php echo esc_html($data->status); ?></td>
                 <td>

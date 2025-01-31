@@ -62,7 +62,7 @@ class Admin
             'manage_options',
             'leadbook',
             [$this, 'dashboard'],
-            'dashicons-admin-users',
+            'dashicons-index-card',
             6
         );
         add_submenu_page(
@@ -84,8 +84,8 @@ class Admin
 
         add_submenu_page(
             'leadbook',
-            'Deals Section',
-            'Deals',
+            'Invoices Section',
+            'Invoices',
             'manage_options',
             'leadbook-deals',
             [$this, 'deals']
@@ -130,7 +130,10 @@ class Admin
 
     function dashboard()
     {
-        $actions = [];
+        $actions = [
+            ['link' => 'admin.php?page=leadbook-leads', 'title' => 'Leads'],
+            ['link' => 'admin.php?page=leadbook-followups', 'title' => 'Notifications'],
+        ];
         apply_filters('leadbook_dashboard_actions', $actions);
         leadbook_render_admin('dashboard', ['title' => 'Dashboard Section', 'actions' => $actions]);
     }
@@ -161,7 +164,7 @@ class Admin
             ['link' => 'admin.php?page=leadbook-deals&action=add', 'title' => 'Add New'],
             ['link' => 'admin.php?page=leadbook-deals&action=export', 'title' => 'Export CSV'],
         ];
-        leadbook_render_admin('deals', ['title' => 'Deals Section', 'actions' => $actions]);
+        leadbook_render_admin('deals', ['title' => 'Invoices / Quatations Section', 'actions' => $actions]);
     }
 
     function transections()

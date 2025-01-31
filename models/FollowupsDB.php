@@ -1,11 +1,8 @@
 <?php
 namespace Models;
 
-require_once LEADBOOK_MODELS . 'BaseModel.php';
-use Models\BaseModel;
-
 if(!class_exists('FollowupsDB')):
-class FollowupsDB extends BaseModel {
+class FollowupsDB {
     private $db;
     protected $table = 'lb_followups'; 
     public function __construct() {
@@ -81,13 +78,13 @@ class FollowupsDB extends BaseModel {
     //     return $this->belongsTo(UsersDB::class, 'user_id');
     // }
 
-    public function lead(){
-        return $this->belongsTo(LeadsDB::class, 'lead_id');
-    }
+    // public function lead(){
+    //     return $this->belongsTo(LeadsDB::class, 'lead_id');
+    // }
 
-    public function business(){
-        return $this->belongsTo(BusinessesDB::class, 'business_id');
-    }
+    // public function business(){
+    //     return $this->belongsTo(BusinessesDB::class, 'business_id');
+    // }
 
     public function getByLead($id) {
         return $this->db->get_row("SELECT * FROM {$this->table} WHERE lead_id = {$id}");

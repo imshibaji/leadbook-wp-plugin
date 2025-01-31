@@ -16,7 +16,7 @@ list_header('All Busineses');
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="max-height: 500px; overflow-y: scroll">
                         <?php foreach (get_all_businesses() as $data): ?>
                             <tr class="text-center">
                                 <td><?php echo esc_html($data->name); ?></td>

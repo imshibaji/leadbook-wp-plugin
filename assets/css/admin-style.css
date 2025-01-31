@@ -5,3 +5,12 @@
 .row{
     margin: 0px !important;
 }
+.textarea{
+    border: 1px solid #a1a1a1;
+    height: 400px;
+}
+@media screen and (max-width: 782px) {
+    .textarea{
+        height: 200px;
+    }
+}

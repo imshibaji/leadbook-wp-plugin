@@ -10,3 +10,4 @@ get_leadbook_header($title, $actions ?? []);
         </div>
     </div>
 </div>
+<?php get_leadbook_footer(); ?>

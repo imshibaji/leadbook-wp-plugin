@@ -1,11 +1,10 @@
 <?php
 namespace Models;
 
-require_once LEADBOOK_MODELS . 'BaseModel.php';
-use Models\BaseModel;
+use Models\LeadsDB;
 
 if(!class_exists('BusinessesDB')):
-class BusinessesDB extends BaseModel {
+class BusinessesDB {
     private $db;
     protected $table = 'lb_business';
     public function __construct() {
@@ -95,13 +94,10 @@ class BusinessesDB extends BaseModel {
         return $this->db->delete($this->table, array('ID' => $id));
     }
 
-    // public function getLeads() {
-    //     $leads = new Leadbook_LeadsDB();
-    //     $leads_table = $leads->getTable();
-    //     return $this->db->get_results("SELECT * FROM {$leads_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$leads_table}.business_id");
-    // }
-    public function leads(){
-        return $this->hasMany(LeadsDB::class, 'business_id');
+    public function leads() {
+        $leads = new LeadsDB();
+        $leads_table = $leads->getTable();
+        return $this->db->get_results("SELECT * FROM {$leads_table} INNER JOIN {$this->table} ON {$this->table}.ID = {$leads_table}.business_id");
     }
 }
 endif;

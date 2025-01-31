@@ -1,11 +1,8 @@
 <?php
 namespace Models;
 
-require_once LEADBOOK_MODELS . 'BaseModel.php';
-use Models\BaseModel;
-
 if(!class_exists('TransectionsDB')):
-class TransectionsDB extends BaseModel {
+class TransectionsDB {
     private $db;
     protected $table = 'lb_transections';
     public function __construct() {

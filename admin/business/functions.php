@@ -96,6 +96,22 @@ function delete_business($datas)
     }
 }
 
+function get_business_contact_info($business){
+    $txt = $business->website ? '(W): ' . esc_html($business->website) . ', ' : '';
+    $txt .= $business->mobile ? '(M): ' . esc_html($business->mobile) . ', ' : '';
+    $txt .= $business->email ? '(E): ' . esc_html($business->email) . '. ' : '';
+    return $txt;
+}
+
+function get_business_complete_address($business){
+    $txt = $business->address ? esc_html($business->address) . ', ' : '';
+    $txt .= $business->city ? esc_html($business->city) . ', ' : '';
+    $txt .= $business->state ? esc_html($business->state) . ', ' : '';
+    $txt .= $business->country ? esc_html($business->country) . ', ' : '';
+    $txt .= $business->pincode ? 'Pincode: ' . esc_html($business->pincode) . '. ' : '';
+    return $txt;
+}
+
 
 function business_list_for_dashboard()
 {

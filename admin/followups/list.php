@@ -19,7 +19,7 @@ list_header('All Followups / Notifications', 'followups');
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="max-height: 500px; overflow-y: scroll">
                         <?php foreach (get_all_followups() as $data): ?>
                             <tr class="text-center">
                                 <td><?php echo esc_html($data->title); ?></td>

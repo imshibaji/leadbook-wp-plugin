@@ -17,7 +17,7 @@ list_header('All Transections', 'transections');
 
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody style="max-height: 500px; overflow-y: scroll">
                         <?php foreach (get_all_transections() as $transection): ?>
                             <tr>
                                 <td class="text-center"><?php echo esc_html($transection->ID); ?></td>
