@@ -41,9 +41,7 @@ class BusinessesDB {
             gst_number VARCHAR(255) default NULL,
             pan_number VARCHAR(255) default NULL,
             aadhar_number VARCHAR(255) default NULL,
-            pan_image VARCHAR(255) default NULL,
-            aadhar_image VARCHAR(255) default NULL,
-            bank_image VARCHAR(255) default NULL,
+            signature VARCHAR(255) default NULL,
 
 
             created_by INT(11) NOT NULL,

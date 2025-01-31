@@ -40,9 +40,7 @@ function add_business($datas)
             'gst_number' => $datas['gst_number'],
             'pan_number' => $datas['pan_number'],
             'aadhar_number' => $datas['aadhar_number'],
-            'pan_image' => $datas['pan_image'],
-            'aadhar_image' => $datas['aadhar_image'],
-            'bank_image' => $datas['bank_image'],
+            'signature' => $datas['signature'],
             'created_by' => $datas['created_by'],
             'managed_by' => $datas['managed_by'],
         ];
@@ -75,9 +73,7 @@ function update_business($datas)
             'gst_number' => $datas['gst_number'],
             'pan_number' => $datas['pan_number'],
             'aadhar_number' => $datas['aadhar_number'],
-            'pan_image' => $datas['pan_image'] ?? '',
-            'aadhar_image' => $datas['aadhar_image'] ?? '',
-            'bank_image' => $datas['bank_image'] ?? '',
+            'signature' => $datas['signature'] ?? '',
             'created_by' => $datas['created_by'],
             'managed_by' => $datas['managed_by'],
         ];
@@ -112,6 +108,15 @@ function get_business_complete_address($business){
     return $txt;
 }
 
+function get_business_bank_info($business){
+    $txt = $business->bank_name ? '<b>Bank Name:</b> '.esc_html($business->bank_name) . '<br>' : '';
+    $txt .= $business->ifsc_code ? '<b>IFSC Code:</b> '.esc_html($business->ifsc_code) . '<br>' : '';
+    $txt .= $business->account_number ? '<b>A/C Number:</b> ' .esc_html($business->account_number) . '<br>' : '';
+    $txt .= $business->gst_number ? '<b>GST Number:</b> ' .esc_html($business->gst_number) . '<br>' : '';
+    $txt .= $business->pan_number ? '<b>PAN / TAN Number:</b> ' . esc_html($business->pan_number) . '<br>' : '';
+    $txt .= $business->aadhar_number ? '<b>Aadhar Number:</b> ' . esc_html($business->aadhar_number) . '<br>' : '';
+    return $txt;
+}
 
 function business_list_for_dashboard()
 {

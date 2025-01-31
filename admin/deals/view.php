@@ -15,7 +15,12 @@ $lead = get_lead_by_deal_id($data->ID);
                 <table style="width:100%;">
                     <tr>
                         <th style="width:60%">
-                            <h1><?php echo esc_html($business->name) ?></h1>
+                            <div class="logo">
+                                <?php if($business->logo):?>
+                                    <img src="<?php echo esc_html($business->logo); ?>" height="60px" />
+                                <?php endif; ?>
+                                <h1><?php echo esc_html($business->name) ?></h1>
+                            </div>
                             <h6><?php echo get_business_contact_info($business); ?></h6>
                             <h6><?php echo get_business_complete_address($business); ?></h6>
                         </th>
@@ -109,6 +114,21 @@ $lead = get_lead_by_deal_id($data->ID);
                         </tr>
                     </tfoot>
                 </table>
+                <hr>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="padding:5px">
+                            <?php echo get_business_bank_info($business); ?>
+                        </td>
+                        <td class="signature_td">
+                            <div class="signature">
+                                <!-- <?php if($business->signature):?><img src="<?php echo esc_html($business->signature); ?>" height="80px" /><?php endif; ?> -->
+                                <p style="margin-bottom: 0px; padding-bottom: 0px;">----------------------------------------------</p>
+                                <h4 style="margin-top: 0px; padding-top: 0px;">Signature</h4>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <div class="text-end my-3">
                 <button onclick="downloadPDF(<?php echo esc_html($data->ID); ?>)" class="btn btn-primary">PDF Invoice Download</button>
@@ -131,6 +151,34 @@ $lead = get_lead_by_deal_id($data->ID);
 
 .invoice-table th {
     font-weight: bold;
+}
+.logo {
+    display: flex;
+    flex-direction: row; /* Stack elements vertically */
+    align-items: center; /* Center elements horizontally */
+    justify-content: start; /* Center elements vertically */
+    gap: 10px; /* Space between image and h1 */
+    text-align: center; /* Align text in the center */
+}
+.signature_td{
+    display:flex;
+    justify-content:right;
+    vertical-align: bottom;
+    height: 160px;
+}
+.signature{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items:center;
+}
+.pdf-container {
+    width: 100%;
+    min-height: 100vh; /* Ensures full height */
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 @media print {
     #invoice{
@@ -156,12 +204,14 @@ $lead = get_lead_by_deal_id($data->ID);
     function downloadPDF(id) {
             // Create a temporary div to hold selected elements
             let pdfContainer = document.createElement("div");
+            pdfContainer.classList.add("pdf-container");
 
             // ✅ Add specific elements to the PDF
             let invoice = document.querySelector("#invoice").cloneNode(true);
             let extraContent = document.querySelector("#invoice_css").cloneNode(true);
 
             // Apply the PDF styling
+
             // invoice.classList.add("pdf-style");
             // extraContent.classList.add("pdf-style");
 

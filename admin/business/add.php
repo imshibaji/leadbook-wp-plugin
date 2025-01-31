@@ -4,6 +4,7 @@ $actions = [
 ];
 get_leadbook_header($title, $actions);
 
+wp_enqueue_media();
 add_business($_POST);
 ?>
 <div class="container-fluid">
@@ -60,13 +61,9 @@ add_business($_POST);
                             <label for="website">Website</label>
                             <input type="text" name="website" id="website" class="form-control">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control"></textarea>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="logo">Logo</label>
-                            <input type="file" name="logo" id="logo" class="form-control p-2">
+                            <textarea name="description" id="description" class="form-control textarea"></textarea>
                         </div>
                         <div class="col-md-4">
                             <label for="bank_name">Bank Name</label>
@@ -92,19 +89,7 @@ add_business($_POST);
                             <label for="aadhar_number">Aadhar Number</label>
                             <input type="text" name="aadhar_number" id="aadhar_number" class="form-control">
                         </div>
-                        <div class="col-md-4">
-                            <label for="pan_image">PAN Image</label>
-                            <input type="file" name="pan_image" id="pan_image" class="form-control p-2">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="aadhar_image">Aadhar Image</label>
-                            <input type="file" name="aadhar_image" id="aadhar_image" class="form-control p-2">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="bank_image">Bank Image</label>
-                            <input type="file" name="bank_image" id="bank_image" class="form-control p-2">
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="created_by">Created By</label>
                             <select name="created_by" id="created_by" class="form-control" required>
                                 <?php foreach (get_users() as $user): ?>
@@ -112,13 +97,27 @@ add_business($_POST);
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="managed_by">Managed By</label>
                             <select name="managed_by" id="managed_by" class="form-control" required>
                                 <?php foreach (get_users() as $user): ?>
                                     <option value="<?php echo esc_html($user->ID); ?>"><?php echo esc_html($user->first_name); ?> <?php echo esc_html($user->last_name); ?></option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="logo">Business Logo</label>
+                            <input type="hidden" id="logo" name="logo">
+                            <div id="logo_preview">
+                                <p>Upload Logo 160 X 60</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="signature">Signature Image</label>
+                            <input type="hidden" id="signature" name="signature">
+                            <div id="signature_preview">
+                                <p>Upload Logo 160 X 60</p>
+                            </div>
                         </div>
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-primary">Save Business</button>
@@ -129,3 +128,45 @@ add_business($_POST);
         </div>
     </div>
 </div>
+<style>
+.textarea{
+    height: 35px;
+}
+#logo_preview, #signature_preview{
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+    display: flex;
+  	justify-content: center;
+  	align-items: center;
+}
+#logo_preview p, #signature_preview p{
+    padding: 0px;
+    margin: 0px;
+}
+#logo_preview img, #signature_preview img{
+    width: 100px;
+    height: 100px;
+}
+</style>
+<script>
+imageUploader('logo');
+imageUploader('signature');
+function imageUploader(image){
+    jQuery(document).ready(function($) {
+        $('#'+image+'_preview').click(function(e) {
+            e.preventDefault();
+            var mediaUploader = wp.media({
+                title: 'Select Image',
+                button: { text: 'Use This Image' },
+                multiple: false
+            }).on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                $('#'+image).val(attachment.url);
+                $('#'+image+'_preview').html('<img src="'+attachment.url+'">');
+            }).open();
+        });
+    });
+}
+</script>
