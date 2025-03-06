@@ -26,28 +26,28 @@ function leadbook_activation() {
 }
 
 function leadbook_deactivation() {
-    $businesses_db = leadbook_model_object('BusinessesDB');
-    $businesses_db->truncate();
-    $businesses_db->dropTable();
+    // $businesses_db = leadbook_model_object('BusinessesDB');
+    // $businesses_db->truncate();
+    // $businesses_db->dropTable();
 
-    $leads_db = leadbook_model_object('LeadsDB');
-    $leads_db->truncate();
-    $leads_db->dropTable();
+    // $leads_db = leadbook_model_object('LeadsDB');
+    // $leads_db->truncate();
+    // $leads_db->dropTable();
 
-    $followups_db = leadbook_model_object('FollowupsDB');
-    $followups_db->truncate();
-    $followups_db->dropTable();
+    // $followups_db = leadbook_model_object('FollowupsDB');
+    // $followups_db->truncate();
+    // $followups_db->dropTable();
 
-    $deals_db = leadbook_model_object('DealsDB');
-    $deals_db->truncate();
-    $deals_db->dropTable();
+    // $deals_db = leadbook_model_object('DealsDB');
+    // $deals_db->truncate();
+    // $deals_db->dropTable();
 
-    $transections_db = leadbook_model_object('TransectionsDB');
-    $transections_db->truncate();
-    $transections_db->dropTable();
+    // $transections_db = leadbook_model_object('TransectionsDB');
+    // $transections_db->truncate();
+    // $transections_db->dropTable();
 
-    // delete db version
-    delete_site_option( 'leadbook_db_version' );
+    // // delete db version
+    // delete_site_option( 'leadbook_db_version' );
 }
 
 function leadbook_uninstallation() {
